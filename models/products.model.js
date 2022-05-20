@@ -1,5 +1,29 @@
 const { Schema, model } = require('mongoose');
 
+const kitsSchema = Schema({
+    product: {
+        type: Schema.Types.ObjectId,
+        ref: 'Product',
+        require: true
+    },
+    qty: {
+        type: Number,
+        require: true
+    }
+});
+
+const impuestoSchema = Schema({
+
+    name: {
+        type: String,
+    },
+
+    valor: {
+        type: Number,
+        require: true
+    }
+});
+
 const ProductSchema = Schema({
 
     code: {
@@ -7,61 +31,107 @@ const ProductSchema = Schema({
         require: true,
         unique: true
     },
-
-    serial: {
+    name: {
         type: String,
-        require: true,
-        unique: true
+        require: true
     },
-
-    brand: {
-        type: String
+    description: {
+        type: String,
     },
-
-    model: {
-        type: String
+    type: {
+        type: String,
+        require: true
     },
-
-    year: {
+    kit: [kitsSchema],
+    cost: {
+        type: Number,
+        require: true
+    },
+    tax: {
+        type: Boolean,
+        default: false
+    },
+    impuesto: [impuestoSchema],
+    inventario: {
+        type: Number,
+        default: 0
+    },
+    gain: {
         type: Number
     },
-
-    status: {
-        type: Boolean,
-        default: true
-    },
-
-    estado: {
-        type: String,
-        default: 'Disponible'
-    },
-    cliente: {
-        type: Boolean,
-        default: false
-    },
-    client: {
-        type: Schema.Types.ObjectId,
-        ref: 'Clients',
-    },
-
-    preventivo: {
-        type: Boolean,
-        default: false
-    },
-
-    frecuencia: {
+    price: {
         type: Number,
-        default: 3
+        require: true
     },
-
-    next: {
-        type: Date
+    wholesale: {
+        type: Number
+    },
+    department: {
+        type: Schema.Types.ObjectId,
+        ref: 'Department',
+    },
+    stock: {
+        type: Number,
+        default: 0
+    },
+    min: {
+        type: Number,
+        default: 0
+    },
+    max: {
+        type: Number,
+        default: 0
+    },
+    bought: {
+        type: Number,
+        default: 0
+    },
+    sold: {
+        type: Number,
+        default: 0
+    },
+    returned: {
+        type: Number,
+        default: 0
+    },
+    damaged: {
+        type: Number,
+        default: 0
     },
     img: {
         type: String
     },
-
-    date: {
+    expiration: {
+        type: Date
+    },
+    vencido: {
+        type: Boolean,
+        default: false
+    },
+    low: {
+        type: Boolean,
+        default: false
+    },
+    out: {
+        type: Boolean,
+        default: false
+    },
+    status: {
+        type: Boolean,
+        default: true
+    },
+    visibility: {
+        type: Boolean,
+        default: true
+    },
+    comanda: {
+        type: Boolean,
+        default: false
+    },
+    tipo: {
+        type: String
+    },
+    fecha: {
         type: Date,
         default: Date.now
     }
