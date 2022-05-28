@@ -1,5 +1,5 @@
 /** =====================================================================
- *  MACHINES ROUTER
+ *  STEPS ROUTER
 =========================================================================*/
 const { Router } = require('express');
 const { check } = require('express-validator');
@@ -9,30 +9,31 @@ const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT } = require('../middlewares/validar-jwt');
 
 // CONTROLLERS
-const { getMachines, postMachine, putMachine } = require('../controllers/machines.controller');
+const { postStep, putStep, getStepsTask } = require('../controllers/steps.controller');
 
 const router = Router();
 
 /** =====================================================================
- *  GET MACHINES
+ *  GET STEPS
 =========================================================================*/
-router.get('/', validarJWT, getMachines);
+router.get('/task/:task', validarJWT, getStepsTask);
 
 /** =====================================================================
- *  POST MACHINES
+ *  POST STEPS
 =========================================================================*/
 router.post('/', [
         validarJWT,
-        check('name', 'El nombre es obligatorio').not().isEmpty(),
+        check('staff', 'Se debe asignar un staff').isMongoId(),
+        check('task', 'Se debe asignar una tarea').isMongoId(),
         validarCampos
     ],
-    postMachine
+    postStep
 );
 
 /** =====================================================================
- *  PUT MACHINES  putMachine
+ *  PUT STEPS
 =========================================================================*/
-router.put('/:id', validarJWT, putMachine);
+router.put('/:id', validarJWT, putStep);
 
 
 module.exports = router;

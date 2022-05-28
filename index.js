@@ -38,6 +38,10 @@ app.use('/api/products', require('./routes/products.route'));
 app.use('/api/search', require('./routes/search.route'));
 
 app.use('/api/users', require('./routes/users.route'));
+
+app.use('/api/tasks', require('./routes/tasks.route'));
+app.use('/api/steps', require('./routes/steps.route'));
+
 app.use('/api/uploads', require('./routes/uploads.route'));
 
 // SPA

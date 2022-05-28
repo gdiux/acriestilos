@@ -2,6 +2,8 @@ const { response } = require('express');
 
 const User = require('../models/users.model');
 const Client = require('../models/clients.model');
+const Machine = require('../models/machines.model');
+const Task = require('../models/tasks.model');
 
 /** =====================================================================
  *  SEARCH FOR TABLE
@@ -79,6 +81,52 @@ const search = async(req, res = response) => {
                 .populate('client', 'name phone cid'),
                 Product.countDocuments()
             ]);
+            break;
+
+        case 'machines':
+
+            [data, total] = await Promise.all([
+                Machine.find({
+                    $or: [
+                        { name: regex },
+                        { serial: regex }
+                    ]
+                }),
+                Machine.countDocuments()
+            ]);
+
+            break;
+
+        case 'tasks':
+
+            // COMPROBAR SI ES NUMERO
+            if (number) {
+
+                [data, total] = await Promise.all([
+                    Task.find({
+                        $or: [
+                            { control: busqueda }
+                        ]
+                    })
+                    .populate('client', 'name phone cedula email cid address city department status')
+                    .populate('create', 'name'),
+                    Task.countDocuments()
+                ]);
+
+            } else {
+                [data, total] = await Promise.all([
+                    Task.find({
+                        $or: [
+                            { estado: regex },
+                            { description: regex }
+                        ]
+                    })
+                    .populate('client', 'name phone cedula email cid address city department status')
+                    .populate('create', 'name'),
+                    Task.countDocuments()
+                ]);
+            }
+
             break;
 
         default:

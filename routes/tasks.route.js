@@ -1,5 +1,5 @@
 /** =====================================================================
- *  MACHINES ROUTER
+ *  TASKS ROUTER
 =========================================================================*/
 const { Router } = require('express');
 const { check } = require('express-validator');
@@ -9,30 +9,35 @@ const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT } = require('../middlewares/validar-jwt');
 
 // CONTROLLERS
-const { getMachines, postMachine, putMachine } = require('../controllers/machines.controller');
+const { getTasks, postTask, putTask, getTaskId } = require('../controllers/tasks.controller');
 
 const router = Router();
 
 /** =====================================================================
- *  GET MACHINES
+ *  GET TAKS
 =========================================================================*/
-router.get('/', validarJWT, getMachines);
+router.get('/', validarJWT, getTasks);
 
 /** =====================================================================
- *  POST MACHINES
+ *  GET TAKS ID
+=========================================================================*/
+router.get('/:id', validarJWT, getTaskId);
+
+/** =====================================================================
+ *  POST TAK
 =========================================================================*/
 router.post('/', [
         validarJWT,
-        check('name', 'El nombre es obligatorio').not().isEmpty(),
+        check('client', 'El cliente es obligatorio').isMongoId(),
         validarCampos
     ],
-    postMachine
+    postTask
 );
 
 /** =====================================================================
- *  PUT MACHINES  putMachine
+ *  PUT TAK
 =========================================================================*/
-router.put('/:id', validarJWT, putMachine);
+router.put('/:id', validarJWT, putTask);
 
 
 module.exports = router;
