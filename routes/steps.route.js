@@ -9,7 +9,7 @@ const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT } = require('../middlewares/validar-jwt');
 
 // CONTROLLERS
-const { postStep, putStep, getStepsTask } = require('../controllers/steps.controller');
+const { postStep, putStep, getStepsTask, postNotesStep } = require('../controllers/steps.controller');
 
 const router = Router();
 
@@ -29,6 +29,20 @@ router.post('/', [
     ],
     postStep
 );
+
+/** =====================================================================
+ *  POST NOTES IN PREVENTIVE
+=========================================================================*/
+router.post('/notes/:id', [
+        validarJWT,
+        check('note', 'El comentario es olbigatorio').not().isEmpty(),
+        validarCampos
+    ],
+    postNotesStep
+);
+/** =====================================================================
+*  POST NOTES IN PREVENTIVE
+=========================================================================*/
 
 /** =====================================================================
  *  PUT STEPS

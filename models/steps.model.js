@@ -26,6 +26,14 @@ const attachmentSchema = Schema({
     date: {
         type: Date,
         default: Date.now()
+    },
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+    },
+    type: {
+        type: String,
+        default: 'img'
     }
 
 });

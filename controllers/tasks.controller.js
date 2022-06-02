@@ -15,7 +15,7 @@ const getTasks = async(req, res = response) => {
         const [tasks, total] = await Promise.all([
             Task.find()
             .populate('client', 'name phone cedula email cid address city department status')
-            .populate('create', 'name')
+            .populate('create', 'name img')
             .skip(desde)
             .limit(limit),
             Task.countDocuments()
@@ -49,7 +49,7 @@ const getTaskId = async(req, res = response) => {
         // COMPROBAR SI EXISTE
         const taskDB = await Task.findById(tid)
             .populate('client', 'name phone cedula email cid address city department status')
-            .populate('create', 'name')
+            .populate('create', 'name img')
             .populate('products.product', 'name code');
 
         if (!taskDB) {

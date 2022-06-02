@@ -3,6 +3,7 @@ const fs = require('fs');
 // MODELS
 const Product = require('../models/products.model');
 const User = require('../models/users.model');
+const Step = require('../models/steps.model')
 
 /** =====================================================================
  *  DELETE IMAGE
@@ -25,7 +26,7 @@ const deleteImage = (path) => {
 /** =====================================================================
  *  UPDATE IMAGE 
 =========================================================================*/
-const updateImage = async(tipo, id, nameFile, desc) => {
+const updateImage = async(tipo, id, nameFile, uid, desc) => {
 
     let pathOld = '';
 
@@ -67,47 +68,32 @@ const updateImage = async(tipo, id, nameFile, desc) => {
             return true;
 
             break;
-            // case 'job':
+        case 'archivos':
 
-            //     // SEARCH USER BY ID
-            //     const preventivesDB = await Preventive.findById(id);
-            //     if (!preventivesDB) {
-            //         return false;
-            //     }
+            // SEARCH USER BY ID
+            const stepDB = await Step.findById(id)
+                .populate('staff', 'name img uid')
+                .populate('attachments.user', 'name img')
+                .populate('notes.staff', 'name img');
+            if (!stepDB) {
+                return false;
+            }
 
-            //     // SAVE IMAGE imgBef imgAft video
+            // SAVE IMAGE imgBef imgAft video
 
-            //     if (desc === 'imgBef') {
+            stepDB.attachments.push({
+                attachment: nameFile,
+                date: Date.now(),
+                user: uid,
+                type: desc
+            });
 
-            //         preventivesDB.imgBef.push({
-            //             img: nameFile,
-            //             date: Date.now()
-            //         });
-            //         await preventivesDB.save();
-            //     } else if (desc === 'imgAft') {
-            //         preventivesDB.imgAft.push({
-            //             img: nameFile,
-            //             date: Date.now()
-            //         });
-
-            //         await preventivesDB.save();
-
-            //     } else if (desc === 'video') {
-
-            //         preventivesDB.video.push({
-            //             video: nameFile,
-            //             date: Date.now()
-            //         });
-
-            //         await preventivesDB.save();
-            //     } else {
-            //         return false;
-            //     }
+            await stepDB.save();
 
 
-            //     return true;
+            return stepDB;
 
-            //     break;
+            break;
 
         default:
             break;
